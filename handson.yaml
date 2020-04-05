@@ -1,1 +1,31 @@
-
+Parameters:
+  UserGivenName:
+    NoEcho: 'false'
+    Type: String
+    Description: Pls enter ur user name for ur IAM account
+    MinLength: '5'
+    MaxLength: '10'
+    ConstraintDescription: Your User name should associate with your tribe
+  Password:
+    NoEcho: 'true'
+    Type: String
+    Description: New account password (this is what i saw in templates)
+    MinLength: '5'
+    MaxLength: '41'
+    ConstraintDescription: the password must be between 3 and 41 characters
+Resources:
+  CFNUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref 'UserGivenName'
+      LoginProfile:
+        Password: !Ref 'Password'
+  CFNUserGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: Sayak
+  Users:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: !Ref 'CFNUserGroup'
+      Users: [!Ref 'CFNUser']    
